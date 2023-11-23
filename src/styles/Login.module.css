@@ -1,0 +1,76 @@
+.LoginContainer{
+    width: 100%;
+    min-height: 100vh;
+    background-color: #030303;
+}
+
+.LoginHeader{
+    text-transform: capitalize;
+    color: #fff;
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.SubLoginContainer{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.RegistrationPara{
+    color: #fff;
+    font-size: 16px;
+    font-weight: 300;
+
+}
+
+.InputFieldsContainer{
+    /* border: "1px solid lightgray", width: 600 */
+    border: 1px solid #fff;
+    width: 600px;
+    padding:0 12px;
+    border-radius: 12px;
+}
+
+.InputFields{
+    width: 100%;
+    background-color: #030303;
+    border: none;
+    color: #fff;
+    padding: 12px 0;
+    font-size: 16px;
+}
+
+.PassInputField{
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.InputFields:focus{
+    outline: none;
+}
+
+.Btn{
+    background-color: #6741d9;
+    color:#fff;
+    width: 625px;
+    border: none;
+    height: 48px;
+    margin: 30px 0 15px 0;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.Btn:hover{
+    border: 1px solid #F0C3F1;
+}
+
+.IconContainer{
+    cursor: pointer;
+}
