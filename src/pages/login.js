@@ -15,6 +15,8 @@ const login = () => {
   const [password, setPassword] = useState("");
   const [showpassword, setShowpassword] = useState(false);
   const [responseData, setResponseData] = useState(null);
+  const [emailerror, setEmailerror] = useState();
+  const [passworderror, setPassworderror] = useState();
   const [error, setError] = useState(null);
 
   function handleUsernameChange(e) {
@@ -38,7 +40,9 @@ const login = () => {
       setResponseData(response.data);
       router.push("/");
     } catch (error) {
-      setError(error);
+      setEmailerror(error.response.data.username);
+      setPassworderror(error.response.data.password);
+      setError(error.response.data.ui_err_msg);
     }
   }
 
@@ -64,7 +68,24 @@ const login = () => {
               value={username}
               onChange={handleUsernameChange}
             />
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 50,
+              }}
+            >
+              {emailerror ? (
+                <p
+                  style={{ color: "red", fontSize: "13px" }}
+                  className={`${poppins.className}`}
+                >
+                  {emailerror[0]}
+                </p>
+              ) : null}
+            </div>
           </div>
+
           <div
             className={`${styles.InputFieldsContainer} ${styles.PassInputField}`}
           >
@@ -86,6 +107,26 @@ const login = () => {
               ) : (
                 <FaEye style={{ color: "#fff", fontSize: 20 }} />
               )}
+            </div>
+
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 54,
+              }}
+            >
+              {passworderror ? (
+                <p
+                  style={{ color: "red", fontSize: "13px" }}
+                  className={`${poppins.className}`}
+                >
+                  {passworderror[0]}
+                </p>
+              ) : null}
+              {error ? (
+                <p style={{ color: "red", fontSize: "13px" }}>{error}</p>
+              ) : null}
             </div>
           </div>
 
