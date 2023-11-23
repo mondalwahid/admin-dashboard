@@ -4,7 +4,6 @@ import styles from "@/styles/Home.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Custombutton from "@/components/Custombutton/Custombutton";
-// import Bargraph from "../components/Bargraph/Bargraph";
 
 const poppins = Poppins({ subsets: ["latin"], weight: "500" });
 
@@ -44,6 +43,7 @@ export default function Home() {
   const [sortedval, setSortedval] = useState();
   const [responsedata, setResponseData] = useState(null);
   const [responsedataerror, setResponsedataerror] = useState(null);
+  const [isChargeEnabled, setIsChargeEnabled] = useState(true);
 
   function handleAmountValChange(e) {
     setAmountval(e.target.value);
@@ -55,8 +55,7 @@ export default function Home() {
   }
 
   function handleRadioChange(e) {
-    const selectedValue = e.target.value;
-    setSelectedradio(selectedValue);
+    setIsChargeEnabled(e.target.value === "yes");
   }
 
   async function handleGetUserDetails() {
@@ -64,6 +63,8 @@ export default function Home() {
       const response = await axios.get(
         "https://stg.dhunjam.in/account/admin/4"
       );
+      const apiBooleanValue = response.data.charge_customers;
+      setIsChargeEnabled(apiBooleanValue);
       setResponseData(response.data);
     } catch (error) {
       setResponsedataerror(error);
@@ -92,92 +93,110 @@ export default function Home() {
 
   return (
     <>
-      <div className={styles.MainContainer}>
-        <div className={styles.SubContainer}>
-          <p className={`${styles.header} ${poppins.className}`}>
-            {responsedata?.data?.name}, {responsedata?.data?.location}
-          </p>
+      {responsedataerror ? (
+        "Something went wrong"
+      ) : responsedata ? (
+        <div className={styles.MainContainer}>
+          <div className={styles.SubContainer}>
+            <p className={`${styles.header} ${poppins.className}`}>
+              {responsedata?.data?.name}, {responsedata?.data?.location}
+            </p>
 
-          <div style={{ width: 600 }}>
-            <div className={`${styles.SectionContainer}`}>
-              {/* First section */}
-              <p
-                style={{
-                  width: 300,
-                }}
-                className={`${poppins.className} ${styles.ParaStyles}`}
-              >
-                do you want to charge your customers for requesting songs?
-              </p>
-              <div className={`${styles.InputContainer}`}>
-                {radioContent.map((e) => {
-                  return (
-                    <React.Fragment key={e.id}>
-                      <input
-                        type="radio"
-                        id={e.item}
-                        name="chargeOption"
-                        value={e.item}
-                        checked={selectedRadio === e.item}
-                        onChange={handleRadioChange}
-                      />
-                      <p
-                        className={`${poppins.className} ${styles.RadioLabels}`}
-                        style={{ marginLeft: 10 }}
+            <div style={{ width: 600 }}>
+              <div className={`${styles.SectionContainer}`}>
+                {/* First section */}
+                <p
+                  style={{
+                    width: 300,
+                  }}
+                  className={`${poppins.className} ${styles.ParaStyles}`}
+                >
+                  do you want to charge your customers for requesting songs?
+                </p>
+                <div className={`${styles.InputContainer}`}>
+                  {radioContent.map((e) => {
+                    return (
+                      <React.Fragment key={e.id}>
+                        <input
+                          type="radio"
+                          id={e.item}
+                          name="chargeOption"
+                          value={e.item}
+                          checked={isChargeEnabled === (e.item === "yes")}
+                          onChange={handleRadioChange}
+                        />
+                        <p
+                          className={`${poppins.className} ${styles.RadioLabels}`}
+                          style={{ marginLeft: 10 }}
+                        >
+                          {e.item}
+                        </p>
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+              </div>
+              {/* Second Section */}
+              <div className={`${styles.SectionContainer}`}>
+                <p className={`${poppins.className} ${styles.ParaStyles}`}>
+                  custom song request amount -
+                </p>
+                <input
+                  disabled={isChargeEnabled === false ? true : false}
+                  value={amountval || sortedval}
+                  onChange={handleAmountValChange}
+                  type="text"
+                  placeholder="Enter an Amount"
+                  className={`${poppins.className} ${styles.ParaStyles} ${styles.InputStyles}`}
+                  style={{
+                    border: isChargeEnabled === false && "1px solid lightgray",
+                    cursor: isChargeEnabled === false && "not-allowed",
+                  }}
+                />
+              </div>
+              {/* Third Section */}
+              <div className={`${styles.SectionContainer}`}>
+                <p
+                  style={{
+                    width: 280,
+                  }}
+                  className={`${poppins.className} ${styles.ParaStyles}`}
+                >
+                  Regular song request amounts, from high to low -
+                </p>
+                <div className={`${styles.AmountContainer}`}>
+                  {songReqAmount?.map((e) => {
+                    return (
+                      <div
+                        key={e.id}
+                        className={`${styles.PriceContainer}`}
+                        style={{
+                          border:
+                            isChargeEnabled === false && "1px solid lightgray",
+                          cursor: isChargeEnabled === false && "not-allowed",
+                        }}
+                        onClick={
+                          isChargeEnabled !== false
+                            ? () => handleAmountChangeClick(e.amount)
+                            : null
+                        }
                       >
-                        {e.item}
-                      </p>
-                    </React.Fragment>
-                  );
-                })}
+                        {e.amount}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-            {/* Second Section */}
-            <div className={`${styles.SectionContainer}`}>
-              <p className={`${poppins.className} ${styles.ParaStyles}`}>
-                custom song request amount -
-              </p>
-              <input
-                value={amountval || sortedval}
-                onChange={handleAmountValChange}
-                type="text"
-                placeholder="Enter an Amount"
-                className={`${poppins.className} ${styles.ParaStyles} ${styles.InputStyles}`}
-              />
-            </div>
-            {/* Third Section */}
-            <div className={`${styles.SectionContainer}`}>
-              <p
-                style={{
-                  width: 280,
-                }}
-                className={`${poppins.className} ${styles.ParaStyles}`}
-              >
-                Regular song request amounts, from high to low -
-              </p>
-              <div className={`${styles.AmountContainer}`}>
-                {songReqAmount?.map((e) => {
-                  return (
-                    <div
-                      key={e.id}
-                      className={`${styles.PriceContainer}`}
-                      onClick={() => handleAmountChangeClick(e.amount)}
-                    >
-                      {e.amount}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <Custombutton
+              isChargeEnabled={isChargeEnabled}
+              mode="savedetailsmode"
+              handleSave={handleSave}
+              poppins={poppins}
+            />
           </div>
-          {/* <Bargraph /> */}
-          <Custombutton
-            mode="savedetailsmode"
-            handleSave={handleSave}
-            poppins={poppins}
-          />
         </div>
-      </div>
+      ) : null}
     </>
   );
 }

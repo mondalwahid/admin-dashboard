@@ -57,6 +57,11 @@
     outline: none;
 }
 
+.IconStyles{
+    color: #fff;
+    font-size: 20px;
+}
+
 .Btn{
     background-color: #6741d9;
     color:#fff;
@@ -75,4 +80,15 @@
 
 .IconContainer{
     cursor: pointer;
+}
+
+.ErrorContainer{
+    position: absolute;
+    left: 0;
+    top: 50px;
+}
+
+.ErrorTextStyles{
+    color: red;
+    font-size: 13px;
 }

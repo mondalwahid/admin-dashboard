@@ -1,10 +1,23 @@
 import React from "react";
 import styles from "@/styles/Login.module.css";
 
-const Custombutton = ({ handleFormSubmit, poppins, mode, handleSave }) => {
+const Custombutton = ({
+  handleFormSubmit,
+  poppins,
+  mode,
+  handleSave,
+  isChargeEnabled,
+}) => {
   return (
     <>
       <button
+        disabled={isChargeEnabled === false ? true : false}
+        style={{
+          background: isChargeEnabled === false && "lightgray",
+          color: isChargeEnabled === false && "black",
+          border: isChargeEnabled === false && "1px solid gray",
+          cursor: isChargeEnabled === false && "not-allowed",
+        }}
         type="submit"
         onClick={
           mode === "formsubmitmode"

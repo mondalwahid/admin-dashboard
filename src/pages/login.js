@@ -27,6 +27,10 @@ const login = () => {
     setPassword(e.target.value);
   }
 
+  function handleShowPassword() {
+    setShowpassword(!showpassword);
+  }
+
   async function handleFormSubmit(e) {
     e.preventDefault();
     try {
@@ -46,10 +50,6 @@ const login = () => {
     }
   }
 
-  function handleShowPassword() {
-    setShowpassword(!showpassword);
-  }
-
   return (
     <>
       <div className={`${styles.LoginContainer} ${poppins.className}`}>
@@ -58,28 +58,14 @@ const login = () => {
           <div className={`${styles.InputFieldsContainer}`}>
             <input
               className={`${styles.InputFields} ${poppins.className}`}
-              style={{
-                width: "100%",
-                backgroundColor: "#030303",
-                border: "none",
-              }}
               placeholder="Username"
               type="text"
               value={username}
               onChange={handleUsernameChange}
             />
-            <div
-              style={{
-                position: "absolute",
-                left: 0,
-                top: 50,
-              }}
-            >
+            <div className={`${styles.ErrorContainer}`}>
               {emailerror ? (
-                <p
-                  style={{ color: "red", fontSize: "13px" }}
-                  className={`${poppins.className}`}
-                >
+                <p className={`${poppins.className} ${styles.ErrorTextStyles}`}>
                   {emailerror[0]}
                 </p>
               ) : null}
@@ -90,11 +76,6 @@ const login = () => {
             className={`${styles.InputFieldsContainer} ${styles.PassInputField}`}
           >
             <input
-              style={{
-                width: "100%",
-                backgroundColor: "#030303",
-                border: "none",
-              }}
               className={`${styles.InputFields} ${poppins.className}`}
               placeholder="password"
               type={showpassword ? "text" : "password"}
@@ -103,29 +84,22 @@ const login = () => {
             />
             <div onClick={handleShowPassword} className={styles.IconContainer}>
               {showpassword ? (
-                <FaEyeSlash style={{ color: "#fff", fontSize: 20 }} />
+                <FaEyeSlash className={`${styles.IconStyles}`} />
               ) : (
-                <FaEye style={{ color: "#fff", fontSize: 20 }} />
+                <FaEye className={`${styles.IconStyles}`} />
               )}
             </div>
 
-            <div
-              style={{
-                position: "absolute",
-                left: 0,
-                top: 54,
-              }}
-            >
+            <div className={`${styles.ErrorContainer}`}>
               {passworderror ? (
-                <p
-                  style={{ color: "red", fontSize: "13px" }}
-                  className={`${poppins.className}`}
-                >
+                <p className={`${poppins.className} ${styles.ErrorTextStyles}`}>
                   {passworderror[0]}
                 </p>
               ) : null}
               {error ? (
-                <p style={{ color: "red", fontSize: "13px" }}>{error}</p>
+                <p className={`${poppins.className} ${styles.ErrorTextStyles}`}>
+                  {error}
+                </p>
               ) : null}
             </div>
           </div>

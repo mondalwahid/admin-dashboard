@@ -1,13 +1,41 @@
-import * as React from "react";
-import { BarChart } from "@mui/x-charts/BarChart";
+import React, { useState } from "react";
+import Chart from "react-apexcharts";
 
-export default function Bargraph() {
+const Bargraph = () => {
+  const [chartData] = useState({
+    options: {
+      chart: {
+        id: "basic-bar",
+      },
+      xaxis: {
+        categories: [
+          "Cutom",
+          "Category 1",
+          "Category 2",
+          "Category 3",
+          "Category 4",
+        ],
+      },
+      toolbar: {
+        show: false,
+      },
+    },
+    series: [
+      {
+        name: "series-1",
+        data: [30, 40, 45, 50, 49],
+      },
+    ],
+  });
+
   return (
-    <BarChart
-      xAxis={[{ scaleType: "band", data: ["group A", "group B", "group C"] }]}
-      series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
-      width={500}
-      height={300}
+    <Chart
+      options={chartData.options}
+      series={chartData.series}
+      type="bar"
+      width="600"
     />
   );
-}
+};
+
+export default Bargraph;
